@@ -15,38 +15,37 @@ namespace Player
 
         public float runSpeed = 20f;
         public float walkSpeed = 12f;
-        private float currentSpeed = 0f;
+        private float currentSpeed;
     
         private float gravity = -9.81f;
         private Vector3 gravityVector = Vector3.zero;
 
-        [HideInInspector] public Vector2 movementInput = Vector2.zero;
-        public float velocitySmoothness = 0.075f;
+        private float _velocitySmoothness = 0.45f;
+        private Vector2 velocity = Vector2.zero;
 
         #endregion
-        
+
+        #region Setup
+
         private void Start()
         {
+            currentSpeed = walkSpeed;
             controller = GetComponent<CharacterController>();
             //animator = GameObject.Find("Joe").GetComponent<Animator>();
         }
 
+        #endregion
+        
+
         private void Update()
         {
             ChangeSpeed();
-
-            var velocity = Vector2.Lerp(movementInput,
-                new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")), velocitySmoothness);
-
-            movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            var desiredMoveDirection = currentSpeed * Time.deltaTime * (movementInput.x * transform.right + movementInput.y * transform.forward);
-
-            /*animator.SetFloat(velocityX, velocity.x);
-            animator.SetFloat(velocityY, velocity.y);*/
-    
-            controller.Move(desiredMoveDirection);
+            
+            Move();
     
             GravityAction();
+            
+            //ModelAnimation();
             
         }
 
@@ -66,7 +65,35 @@ namespace Player
 
         private void ChangeSpeed()
         {
-            currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+            currentSpeed = Input.GetKey(KeyCode.LeftShift) ? Mathf.Lerp(currentSpeed, runSpeed, _velocitySmoothness) : InterpolateFromMaxToMin(currentSpeed, walkSpeed, _velocitySmoothness);
+        }
+
+        private void Move()
+        {
+            var _movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            velocity = Vector2.Lerp(velocity, _movementInput, _velocitySmoothness);
+
+            var _desiredMoveDirection = currentSpeed * Time.deltaTime * (velocity.x * transform.right + velocity.y * transform.forward);
+            controller.Move(_desiredMoveDirection);
+        }
+
+        /*
+        private void ModelAnimation()
+        {
+            animator.SetFloat(velocityX, velocity.x);
+            animator.SetFloat(velocityY, velocity.y);
+        }*/
+
+        #endregion
+
+        #region Help Methods
+
+        private float InterpolateFromMaxToMin(float a, float b, float t)
+        {
+            var add = (b - a) * t;
+            var tmp = a + add;
+
+            return tmp < b ? b : tmp;
         }
 
         #endregion

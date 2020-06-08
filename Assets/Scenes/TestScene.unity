@@ -225,6 +225,8 @@ GameObject:
   m_Component:
   - component: {fileID: 274555383}
   - component: {fileID: 274555382}
+  - component: {fileID: 274555385}
+  - component: {fileID: 274555384}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -266,6 +268,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &274555384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274555381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac786d2b9d345249ad75b8a0b120e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 1000
+  cameraTransform: {fileID: 1089897893}
+--- !u!114 &274555385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274555381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355457db32366fd4aae0e778bacedd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 20
+  walkSpeed: 12
 --- !u!1 &301918852
 GameObject:
   m_ObjectHideFlags: 1
